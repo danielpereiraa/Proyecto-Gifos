@@ -34,17 +34,22 @@ var caja = true
 
 var caja_suggestion = () =>{
   var input = document.getElementById("search").value;
+  var border = document.getElementById("search");
   console.log(input.length) 
   console.log(suggestion.length == 1);
  
   if (input.length !== 0 && caja){
     caja = false
     let caja_s = document.getElementById("suggestion");
+
+    border.style.borderBottom = '1px solid #9CAFC3';
+    
     caja_s.classList.toggle("show_caja");
   }else if (input.length == 0) {
     caja = true
     let caja_s = document.getElementById("suggestion")
     caja_s.classList.toggle("show_caja");
+    border.style.borderBottom = 'none';
   }
 }
 
@@ -69,12 +74,11 @@ var xButton = () =>{
 }
 
 var clean_input = () =>{
-  var suggestion = document.getElementById("search").value;
-  console.log(suggestion)
-  if(suggestion !== ''){
-  suggestion = "Busca GIFOS y mas";
-  console.log(suggestion)
-  }
+  document.getElementById("search").value = "";
+  caja_suggestion();
+  lupa();
+  div_lupa();
+  xButton();
 }
 
 var x = true
@@ -126,8 +130,7 @@ var searchSuggestion = async() => {
 
     
 
-    var border = document.getElementById("search");
-    border.style.borderBottom = '1px solid #9CAFC3';
+    
 
     if (suggestion.childNodes.length != 0){
       console.log(suggestion.textContent)
@@ -480,12 +483,34 @@ var primerosfavoritos = (i, value) =>{
 }
 
 var get_favoritos = () => {
+  var respuesta = document.getElementById("favoritos_container");
+  respuesta.className = "row-direction";
+
+  if (localStorage.length == 0){
+    respuesta.classList.toggle("direction")
+    console.log('hola')
+    var img= document.createElement('img');
+    img.src = "images/icon-fav-sin-contenido.svg";
+    img.id = "no_favs"
+    var mensaje = document.createElement('div');
+    mensaje.id = "no_favs_msj"
+    var text = document.createTextNode('"¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!"')
+
+    respuesta.appendChild(img);
+    mensaje.appendChild(text);
+    respuesta.appendChild(mensaje);
+    console.log(img);
+    console.log('hola')
+  }else{
   for (var i = 0; i < localStorage.length; i++) {
+    console.log('hola')
     var key = localStorage.key(i);
     var value = localStorage.getItem(key);
-    primerosfavoritos(i, value);
-    console.log(key);
-    console.log(value);
-    console.log('Key: ' + key + ', Value: ' + value); 
+      //respuesta.classList.toggle("row-direction");
+
+      console.log(img);
+
+      primerosfavoritos(i, value);
+    }
   }
-}
+  }

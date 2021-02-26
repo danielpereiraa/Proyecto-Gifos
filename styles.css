@@ -366,10 +366,23 @@ a{
 #favoritos_container{
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    
     align-content: center;
     padding-left: 100px;
     padding-right: 100px;
+}
+.row-direction{
+    justify-content: space-between;}
+.direction{
+    justify-content: center;
+}
+#no_favs{
+    width: 150px;
+    height: 151px;
+}
+#no_favs_msj{
+    font-size: 22px;
+    color: #50E3C2;
 }
 
 @media screen and (min-width: 500px){
