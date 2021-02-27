@@ -116,7 +116,7 @@ var lupa = () =>{
     }  
   }
 
-
+//sugerencias
 var searchSuggestion = async() => {
   
   
@@ -258,7 +258,15 @@ var iterateDivSuggestions = (json) =>{
   console.log(inicio);
   console.log(final);
 }
-console.log(createSuggestionDiv)
+
+
+search.addEventListener("keydown", (event) => { 
+  const keyName = event.key;
+  if (keyName == "Enter") {
+ createSuggestionDiv();} });
+
+ 
+
 //Ver mas
 
 var ver_mas_button = () =>{
@@ -273,6 +281,7 @@ var ver_mas_button = () =>{
 
 var ver_mas = document.getElementById('ver_mas');
 ver_mas.addEventListener("click", ver_mas_button);
+
 
 
 //Mouseover
