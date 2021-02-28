@@ -168,10 +168,12 @@ var suggestion = document.getElementById("suggestion");
     console.log(json.data[i].title)
     var newSuggestion = document.createElement("li");
     newSuggestion.id = 'suggestion' + i;
+
     var text = document.createTextNode(json.data[i].title);
     newSuggestion.appendChild(text);
     //  suggestion.style.display = "flex";
     suggestion.appendChild(newSuggestion);
+    newSuggestion.setAttribute('onclick','click_sugerencia(event);');
 
   }
   iterateSuggestions = (json) =>{
@@ -185,7 +187,19 @@ var suggestion = document.getElementById("suggestion");
     }
   }
   
-  console.log(suggestion)
+  var click_sugerencia = (event) => {
+    var sugerencias = event.target;
+    console.log(sugerencias.textContent);
+    document.getElementById("search").value = sugerencias.textContent;
+    createSuggestionDiv();
+    scroll();
+  }
+
+  var scroll = () =>{
+    var divs = document.getElementById("searchResults");
+    divs.scrollIntoView();
+    console.log("scroll")
+  }
 
 
   var search = document.getElementById("search");
@@ -200,6 +214,7 @@ var suggestion = document.getElementById("suggestion");
 
 var createSuggestionDiv = async() =>{
 
+
   let inputVar = document.getElementById("search").value;
   console.log(inputVar)
   let fetch1= await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VJJnUyLRY3b1yOqZrg6mgbGrvIjNOYhT&q=${inputVar}&limit=50&offset=0&rating=g&lang=en`)
@@ -209,6 +224,8 @@ var createSuggestionDiv = async() =>{
 
     var searchTitle = document.getElementById("search_title");
     searchTitle.style.display = "flex";
+    searchTitle.textContent = ""
+    console.log(searchTitle.textContent);
     var text = document.createTextNode(document.getElementById("search").value)
     searchTitle.appendChild(text);
 
@@ -237,10 +254,17 @@ var primerosGifs = (i, json) =>{
   img_div.addEventListener("mouseleave", desclickeables);
 
   let img = document.createElement('img');
-        img.setAttribute('src', json.data[i].images.downsized.url);
-        img.classList.toggle('searchImg');
-        img_div.appendChild(img);
-        respuesta.appendChild(img_div);
+  img.setAttribute('src', json.data[i].images.downsized.url);
+  img.classList.toggle('searchImg');
+  img_div.appendChild(img);
+
+  var title = json.data[i].title;
+  console.log(title)
+
+ // var user = json.data[i].user;
+  //console.log(user)
+ // img_div.appendChild(user)
+  respuesta.appendChild(img_div);
 }
 var inicio = 0;
 var final = 12
@@ -263,7 +287,11 @@ var iterateDivSuggestions = (json) =>{
 search.addEventListener("keydown", (event) => { 
   const keyName = event.key;
   if (keyName == "Enter") {
- createSuggestionDiv();} });
+  createSuggestionDiv();
+  scroll();  
+  }
+});
+
 
  
 
