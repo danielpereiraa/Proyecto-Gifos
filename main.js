@@ -250,6 +250,7 @@ var primerosGifs = (i, json) =>{
   var img_div = document.createElement('div');
   img_div.id = 'img_div' + i; 
   img_div.className = 'img_shade';
+  
   img_div.addEventListener("mouseenter", clickeables);
   img_div.addEventListener("mouseleave", desclickeables);
 
@@ -257,14 +258,19 @@ var primerosGifs = (i, json) =>{
   img.setAttribute('src', json.data[i].images.downsized.url);
   img.classList.toggle('searchImg');
   img_div.appendChild(img);
-
-  var title = json.data[i].title;
-  console.log(title)
-
- // var user = json.data[i].user;
-  //console.log(user)
- // img_div.appendChild(user)
   respuesta.appendChild(img_div);
+
+   var title = document.createElement("h3")
+   var text = document.createTextNode(json.data[i].title);
+   var strig =JSON.stringify(json.data[i].title)
+
+   title.id = strig.substring(0,6);
+   title.appendChild(text);
+   img_div.appendChild(title); 
+   
+   
+   console.log(title);
+  console.log(title.id);
 }
 var inicio = 0;
 var final = 12
@@ -322,10 +328,14 @@ var clickeables = (event) =>{
   console.log(parent);
   var img = parent.firstChild;
 
-
+  var title = parent.getElementsByTagName("h3")[0];
+  console.log(title);
+  title.style.display= "flex";
  
 
-  if(parent.childNodes.length < 2 ){
+  if(parent.childNodes.length < 3){
+
+
 
     var buttons_container = document.createElement("div")
   buttons_container.className = 'tres_botones';
@@ -358,6 +368,7 @@ var clickeables = (event) =>{
   parent.appendChild(buttons_container)
   console.log(parent.childNodes.length)
 
+ 
   }else{
     var buttons_container = document.getElementById('tres_botones' + parent.id);
     if(buttons_container == null){
@@ -378,8 +389,11 @@ var clickeables = (event) =>{
 var desclickeables = (event) =>{
   console.log('hola eli')
   var parent = event.target;
-  //var parent = img.parentElement;
- // console.log(img);
+  
+  var title = parent.getElementsByTagName("h3")[0];
+  console.log(title);
+  title.style.display= "none";
+
   console.log(parent);
   console.log(parent.childNodes.length);
   if(parent.childNodes.length > 1){
@@ -398,7 +412,7 @@ var corazon_button = (e) => {
   var gif = parent.parentElement;
   var img = gif.firstChild
   console.log(img.src);
-  console.log(gif);
+  console.log(parent);
 
   localStorage.setItem(parent.id, img.src);
 }
@@ -493,14 +507,17 @@ var show_favoritos = () =>{
   section_search.style.display = 'none';
   section_favoritos.style.display = 'flex';
 
-  var ver_mas = document.getElementById('ver_mas');
+  if(localStorage.length > 12){
+
+  var ver_mas = document.getElementById('ver_mas_fav');
   console.log(ver_mas)
   ver_mas.style.display = "flex";
+  }
 
  if(respuesta.childNodes.length == 0){
   get_favoritos();
   }
-  console.log(respuesta.childNodes.length)
+  console.log(localStorage.length)
    
 }
 
@@ -539,15 +556,10 @@ var get_favoritos = () => {
     console.log(img);
     console.log('hola')
   }else{
-  for (var i = 0; i < localStorage.length; i++) {
-    console.log('hola')
-    var key = localStorage.key(i);
-    var value = localStorage.getItem(key);
-      //respuesta.classList.toggle("row-direction");
-
-      console.log(img);
-
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      var value = localStorage.getItem(key);
       primerosfavoritos(i, value);
-    }
+      }  
   }
   }

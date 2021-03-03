@@ -242,6 +242,20 @@ input[type="text"]:focus:hover {
     display: none;
     }
 
+h3{
+    color:#fff;
+    height: 40px;
+    font-size: 16px;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    display: none;
+    position: absolute;
+    z-index: 10;
+    float: left;
+    bottom: 0px;
+}
+
 .tres_botones{
     flex-direction: row;
     justify-content: center;
@@ -250,11 +264,8 @@ input[type="text"]:focus:hover {
     position: relative;
     z-index: 10;
     float: right;
-    bottom: 192px;
+    bottom: 195px;
     
-}
-.delete_tresBotones{
-    display: none;
 }
 .mini_button{
     width: 32px;
@@ -311,6 +322,7 @@ a{
     height: 200px;
     margin-bottom: 30px;
     background: #572EE5;
+    position: relative;
 }
 
 .img_original{
@@ -383,6 +395,19 @@ a{
 #no_favs_msj{
     font-size: 22px;
     color: #50E3C2;
+}
+#ver_mas_fav{
+    width: 127px;
+    height: 50px;
+    color: #572EE5;
+    border: 1px solid #572EE5;
+    border-radius: 25px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 78px;
+    margin-bottom: 78px;
 }
 
 @media screen and (min-width: 500px){
