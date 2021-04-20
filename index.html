@@ -17,52 +17,101 @@
                 <span></span>
                 <ul class="list">
                     <li class="hoverable"><a href="#episodes">MODO NOCTURNO</a></li>
-                    <li class="hoverable" id="favorito" onclick="show_favoritos()"><a href="#about_us">FAVORITOS</a></li>
-                    <li class="hoverable"><a href="#guests">MIS GIFOS</a></li>
+                    <li class="hoverable" id="favorito"><a href="#about_us">FAVORITOS</a></li>
+                    <li class="hoverable" id="boton_mis_gifos"><a href="#guests">MIS GIFOS</a></li>
+                    <li><img onclick="crear_gif()" src="images/button-crear-gifo.svg" alt="crear gifo"></li>
                 </ul>
             </div>
         </nav>
     </header>
-    <section class="title" id="top">
-        <h1>Inspírate, busca, guarda, y crea los mejores <span class="blue">GIFOS</span></h1>
-        <img src="images/ilustra_header.svg" alt="header" class="searchLogo"/>
-        <div class="border" id="suggestionContainer">
-            <div id="button" class="hideButton" onclick="clean_input('Busca GIFOS y mas')">X</div>
-            <a href="#searchResults">
-                <img src="images/icon-search.svg" alt="search" class="searchIcon" id="lupa" onclick="createSuggestionDiv()"/>
-            </a>
-            <input type="text" id="search" placeholder="Busca GIFOS y mas" autocomplete="off">
-            <ul id="suggestion" class="hide_caja"></ul>
-            <div id="lupa_div" class="hide_lupa">
-                <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
-                <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
-                <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
-                <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
+    <main>
+        <section class="title" id="top">
+            <h1>Inspírate, busca, guarda, y crea los mejores <span class="blue">GIFOS</span></h1>
+            <img src="images/ilustra_header.svg" alt="header" class="searchLogo"/>
+            <div class="border" id="suggestionContainer">
+                <div id="button" class="hideButton" onclick="clean_input('Busca GIFOS y mas')">X</div>
+                <a href="#searchResults">
+                    <img src="images/icon-search.svg" alt="search" class="searchIcon" id="lupa" onclick="createSuggestionDiv()"/>
+                </a>
+                <input type="text" id="search" placeholder="Busca GIFOS y mas" autocomplete="off">
+                <ul id="suggestion" class="hide_caja"></ul>
+                <div id="lupa_div" class="hide_lupa">
+                    <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
+                    <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
+                    <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
+                    <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
+                </div>
             </div>
-        </div>
+            
+        </section>
+
+        <section id="searchResults">
+            <h1 id="search_title" ></h1>
+            <div id="gifs_container"></div>
+            <button id="ver_mas">VER MAS</button>
+        </section>
         
-    </section>
+        <section id="favoritos">
+            <img src="images/icon-favoritos.svg" alt="favoritos">
+            <h1 class="guardados_title">Favoritos</h1>
+            <div id="favoritos_container"></div>
+            <button id="ver_mas_fav">VER MAS</button>
+        </section>
 
-    <section id="searchResults">
-        <h1 id="search_title" ></h1>
-        <div id="gifs_container"></div>
-        <button id="ver_mas">VER MAS</button>
-    </section>
-    
-    <section id="favoritos">
-        <img src="images/icon-favoritos.svg" alt="favoritos">
-        <h1 id="favoritos_title">Favoritos</h1>
-        <div id="favoritos_container"></div>
-        <button id="ver_mas_fav">VER MAS</button>
-    </section>
+        <section id="mis_gifos">
+            <img src="images/icon-mis-gifos.svg" alt="favoritos">
+            <h1 class="guardados_title">Mis gifos</h1>
+            <div id="mis_gifos_container"></div>
+            <button id="ver_mas_fav">VER MAS</button>
+        </section>
 
-    <section id="gif">
-        <H2 id="trending">Trending GIFOS</H2>
-        <p id="gifosP">Mira los últimos GIFO de nuestra comunidad.</p>
-        <div id="imgContainer">
+        <section id="gif">
+            <H2 id="trending">Trending GIFOS</H2>
+            <p id="gifosP">Mira los últimos GIFO de nuestra comunidad.</p>
+            <div id="imgContainer">
+            </div>
+        </section>
+
+        <section id="crear_gif">
+            <div id="crear_gif_div">
+                <div id="camara_img">
+                <img src="images/camara.svg" alt="camara">
+                <img id="luz_camara" src="images/element-luz-camara.svg" alt="camara">
+                </div>
+                <img id="pelicula_img" src="images/pelicula.svg" alt="pelicula">
+                <h2 id="crear_gifos_h2">Aquí podrás crear tus propios GIFOS</h2>
+                <p id="crear_gifos_p">¡Crea tu GIFO en sólo 3 pasos! (sólo necesitas una cámara para grabar un video)</p>
+                <div id="base"><video id="video_gif"></video></div>
+            </div>
+            <div id="tres_pasos">
+                <div id="counter">
+                    <span id="minutos">00:00:</span><span id="segundos">00</span>
+                    <span id="rep"class="show_repetir">REPETIR CAPTURA</span>
+                </div>
+
+                <div id="paso1" class="pasos"><p>1</p></div>
+                <div id="paso2" class="pasos"><p>2</p></div>
+                <div id="paso3" class="pasos"><p>3</p></div>
+                
+            </div>
+            
+            <div id="division_crear"></div>
+            <button id="comenzar">COMENZAR</button>
+        </section>
+    </main>
+    <footer>
+        <div id="footer_left">
+            <p>Compartir en:</p>
+            <img class="img_footer" src="images/icon_facebook.svg" alt="fb">
+            <img class="img_footer" src="images/icon-twitter.svg" alt="tw">
+            <img class="img_footer" src="images/icon_instagram.svg" alt="ig">
         </div>
-    </section>
-
+        <div>
+            <p>© GIFOS 2020 All Rights Reserved.</p>
+        </div>
+    </footer>
     <script src="main.js"></script>    
+    <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
 </body>
+
 </html>
