@@ -5,32 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+
 </head>
 <body>
     <header>
-        <img src="images/logo-desktop.svg" alt="logo" class="logo"/>
+        <img id="logo_img" src="images/logo-desktop.svg" alt="logo"/>
+        <img id="logo_img_mobile" src="images/logo-mobile.svg" alt="logo"/>
+
         <nav>
             <div class="menu">
                 <input type="checkbox" id="checkbox" />
                 <span></span>
                 <span></span>
                 <span></span>
-                <ul class="list">
-                    <li class="hoverable"><a href="#episodes">MODO NOCTURNO</a></li>
-                    <li class="hoverable" id="favorito"><a href="#about_us">FAVORITOS</a></li>
-                    <li class="hoverable" id="boton_mis_gifos"><a href="#guests">MIS GIFOS</a></li>
-                    <li><img onclick="crear_gif()" src="images/button-crear-gifo.svg" alt="crear gifo"></li>
+                <ul id="list">
+                    <li class="hoverable" id="modo_nocturno"><a class="dia" href="#episodes">MODO NOCTURNO</a></li>
+                    <li class="hoverable" id="favorito"><a class="dia" href="#about_us">FAVORITOS</a></li>
+                    <li class="hoverable" id="boton_mis_gifos"><a class="dia" href="#guests">MIS GIFOS</a></li>
+                    <li></li>
                 </ul>
             </div>
         </nav>
+        <img id="boton_mas" onclick="crear_gif()" src="images/button-crear-gifo.svg" alt="crear gifo">
     </header>
     <main>
         <section class="title" id="top">
-            <h1>Inspírate, busca, guarda, y crea los mejores <span class="blue">GIFOS</span></h1>
+            <h1 id="cambiante">Inspírate, busca, guarda, y crea los mejores <span class="blue">GIFOS</span></h1>
             <img src="images/ilustra_header.svg" alt="header" class="searchLogo"/>
             <div class="border" id="suggestionContainer">
-                <div id="button" class="hideButton" onclick="clean_input('Busca GIFOS y mas')">X</div>
-                <a href="#searchResults">
+                <div id="button" class="hideButton" onclick="clean_input('Busca GIFOS y mas')">
+                <img id="close_sugerencia" src="images/close.svg" alt=""></div>
+                <a >
                     <img src="images/icon-search.svg" alt="search" class="searchIcon" id="lupa" onclick="createSuggestionDiv()"/>
                 </a>
                 <input type="text" id="search" placeholder="Busca GIFOS y mas" autocomplete="off">
@@ -40,29 +48,40 @@
                     <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
                     <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
                     <img src="images/icon-search.svg" alt="search" class="div_icon" id="lupa" onclick="createSuggestionDiv()"/>
-                </div>
+                </div>  
             </div>
+            <div id="div_parrafo">
+                <h5 id="trending_h">Trending:</h5>
+                <p id="trending_p">Reactions, Entertainment, Sports, Stickers, Artists</p>
+            </div>
+            <div id="sin_resultado"></div>
             
         </section>
 
         <section id="searchResults">
             <h1 id="search_title" ></h1>
             <div id="gifs_container"></div>
-            <button id="ver_mas">VER MAS</button>
+            <button id="ver_mas">
+                <img id="ver_mas_hover" src="images/CTA-ver-mas.svg" alt="ver_mas">
+            </button>
         </section>
         
         <section id="favoritos">
             <img src="images/icon-favoritos.svg" alt="favoritos">
             <h1 class="guardados_title">Favoritos</h1>
             <div id="favoritos_container"></div>
-            <button id="ver_mas_fav">VER MAS</button>
+            <button id="ver_mas_fav">
+                <img class="ver_mas_noc" src="images/CTA-ver-mas.svg"  onmouseover="this.src='images/CTA-ver-mas-hover.svg'" onmouseout="this.src='images/CTA-ver-mas.svg'" alt="ver_mas">
+            </button>
         </section>
 
         <section id="mis_gifos">
             <img src="images/icon-mis-gifos.svg" alt="favoritos">
             <h1 class="guardados_title">Mis gifos</h1>
             <div id="mis_gifos_container"></div>
-            <button id="ver_mas_fav">VER MAS</button>
+            <button id="ver_mas_fav">
+                <img class="ver_mas_noc" src="images/CTA-ver-mas.svg" onmouseover="this.src='images/CTA-ver-mas-hover.svg'" onmouseout="this.src='images/CTA-ver-mas.svg'" alt="ver_mas">
+            </button>
         </section>
 
         <section id="gif">
@@ -75,7 +94,7 @@
         <section id="crear_gif">
             <div id="crear_gif_div">
                 <div id="camara_img">
-                <img src="images/camara.svg" alt="camara">
+                <img id="camara_noche" src="images/camara.svg" alt="camara">
                 <img id="luz_camara" src="images/element-luz-camara.svg" alt="camara">
                 </div>
                 <img id="pelicula_img" src="images/pelicula.svg" alt="pelicula">
@@ -102,11 +121,13 @@
     <footer>
         <div id="footer_left">
             <p>Compartir en:</p>
-            <img class="img_footer" src="images/icon_facebook.svg" alt="fb">
-            <img class="img_footer" src="images/icon-twitter.svg" alt="tw">
-            <img class="img_footer" src="images/icon_instagram.svg" alt="ig">
+            <div id="footer_logos_container">
+            <img id="fb" class="img_footer" src="images/icon_facebook.svg" alt="fb">
+            <img id="tw" class="img_footer" src="images/icon-twitter.svg" alt="tw">
+            <img id="ig" class="img_footer" src="images/icon_instagram.svg" alt="ig">
+            </div>  
         </div>
-        <div>
+        <div id="footer_right">
             <p>© GIFOS 2020 All Rights Reserved.</p>
         </div>
     </footer>

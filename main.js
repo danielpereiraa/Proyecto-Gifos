@@ -1,4 +1,3 @@
-
 //Trendings
 
 var  trendings = async (i) => {
@@ -7,12 +6,48 @@ var  trendings = async (i) => {
     .then(json => {
       console.log(json)
 
-      let imgContainer = document.getElementById('imgContainer');
+      let trending_container = document.getElementById('imgContainer');
+
+      var img_div = document.createElement('div');
+
+      img_div.id = 'trending_div' + i; 
+      img_div.className = 'trending_shade';
+  
+      img_div.addEventListener("mouseenter", clickeables);
+      img_div.addEventListener("mouseleave", desclickeables);
  
       let img = document.createElement('img');
-        img.setAttribute('src', json.data[i].images.downsized.url);
-        img.classList.toggle('trendingImg');
-        imgContainer.appendChild(img);
+      img.setAttribute('src', json.data[i].images.downsized.url);
+      img.classList.toggle('trendingImg');
+      img_div.appendChild(img);
+      
+
+      var title = document.createElement("h3")
+      var text = document.createTextNode(json.data[i].title);
+      if(text.textContent == ""){
+        text.textContent = "Unknown"
+      }
+      var strig =JSON.stringify(json.data[i].title)
+
+      title.id = strig.substring(0,8);
+      title.appendChild(text);
+      img_div.appendChild(title); 
+
+
+      var user = document.createElement("h4");
+      var text_user = document.createTextNode(json.data[i].username);
+
+      if(text_user.textContent == ""){
+        text_user.textContent = "Unknown"
+      }
+      user.appendChild(text_user);
+      img_div.appendChild(user); 
+
+
+      trending_container.appendChild(img_div);
+
+
+
     }).catch(e => {
       console.log(e.message);
     })
@@ -117,6 +152,35 @@ var lupa = () =>{
   }
 
 //sugerencias
+
+var busqueda_sin_contenido = () =>{
+
+  clean_input();
+
+ 
+
+  var respuesta = document.getElementById("sin_resultado");
+  respuesta.classList.toggle("direction")
+
+  var title= document.createElement('h5');
+  title.id = "ipsum"
+  var text_title = document.createTextNode("Lorem Ipsum");
+  title.appendChild(text_title);
+
+  var img= document.createElement('img');
+  img.src = "images/icon-busqueda-sin-resultado.svg";
+  img.className = "no_favs"
+  var mensaje = document.createElement('div');
+  mensaje.className = "no_favs_msj"
+  var text = document.createTextNode('Intenta con otra búsqueda.');
+  
+  respuesta.appendChild(title);
+
+  respuesta.appendChild(img);
+  mensaje.appendChild(text);
+  respuesta.appendChild(mensaje);
+}
+
 var searchSuggestion = async() => {
   
   
@@ -125,37 +189,22 @@ var searchSuggestion = async() => {
   let fetch1= await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VJJnUyLRY3b1yOqZrg6mgbGrvIjNOYhT&q=${inputVar}&limit=50&offset=0&rating=g&lang=en`)
   .then(response => response.json())
   .then(json => {
-    
-    console.log(json)
 
-    
+    console.log(json);
 
-    
+    console.log(json.data.length == 0);
+    console.log(json.data);
+
 
     if (suggestion.childNodes.length != 0){
-      console.log(suggestion.textContent)
       suggestion.textContent = '';
 
     }
-    iterateSuggestions(json);
+
+  
+      iterateSuggestions(json);
     
-      /*createSuggestionDiv = (i) =>{
-        var respuesta = document.getElementById("searchResults");
-        let img = document.createElement('img');
-              img.setAttribute('src', json.data[i].images.downsized.url);
-              img.classList.toggle('searchImg');
-              console.log(img)
-              respuesta.appendChild(img);
-              console.log(img)
-              console.log(respuesta)
-      }
-      iterateDivSuggestions = () =>{
-        for(var i = 0; i < 12; i++){
-          createSuggestionDiv(i)
-        }
-      }
-      iterateDivSuggestions();
-      createSuggestionDiv();*/
+
   }).catch(e => {
     console.log(e.message);
   })
@@ -192,7 +241,7 @@ var suggestion = document.getElementById("suggestion");
     console.log(sugerencias.textContent);
     document.getElementById("search").value = sugerencias.textContent;
     createSuggestionDiv();
-    scroll();
+    
   }
 
   var scroll = () =>{
@@ -212,8 +261,7 @@ var suggestion = document.getElementById("suggestion");
 
 // creating the search divs
 
-var createSuggestionDiv = async() =>{
-
+var createSuggestionDiv = async() =>{ 
 
   let inputVar = document.getElementById("search").value;
   console.log(inputVar)
@@ -221,7 +269,13 @@ var createSuggestionDiv = async() =>{
   .then(response => response.json())
   .then(json => {
     console.log(json)
+    if(json.data.length == 0){
+      busqueda_sin_contenido();
+      console.log("didit");
+    }else{  
 
+    document.getElementById("div_parrafo").style.display = "none";
+  
     var searchTitle = document.getElementById("search_title");
     searchTitle.style.display = "flex";
     searchTitle.textContent = ""
@@ -237,12 +291,13 @@ var createSuggestionDiv = async() =>{
     ver_mas.style.display = "flex";
     //ver_mas.onclick=iterateDivSuggestions(json);
     //ver_mas.addEventListener("click", ver_mas_button)
-
+    scroll()
     iterateDivSuggestions(json);
-
+    }
   }).catch(e => {
     console.log(e.message);
   })
+
 }
 
 var primerosGifs = (i, json) =>{
@@ -305,8 +360,9 @@ var iterateDivSuggestions = (json) =>{
 search.addEventListener("keydown", (event) => { 
   const keyName = event.key;
   if (keyName == "Enter") {
+    
   createSuggestionDiv();
-  scroll();  
+  
   }
 });
 
@@ -328,6 +384,19 @@ var ver_mas_button = () =>{
 var ver_mas = document.getElementById('ver_mas');
 ver_mas.addEventListener("click", ver_mas_button);
 
+var ver_mas_hover = document.getElementById('ver_mas_hover');
+
+
+
+ver_mas_hover.addEventListener('mouseover', function(){
+  ver_mas_hover.src = "images/CTA-ver-mas-hover.svg"
+})
+ver_mas_hover.addEventListener('mouseout', function(){
+  ver_mas_hover.src = "images/CTA-ver-mas.svg"
+})
+
+
+
 
 
 //Mouseover
@@ -335,16 +404,18 @@ ver_mas.addEventListener("click", ver_mas_button);
 var clickeables = (event) =>{
 
   var parent = event.target;
-  //var parent = img.parentElement;
-  //console.log(img);
+
   console.log(parent);
   var img = parent.firstChild;
 
   var title = parent.getElementsByTagName("h3")[0];
+ // title.id = "title_gif";
   console.log(title);
   title.style.display= "flex";
 
   var username = parent.getElementsByTagName("h4")[0];
+  //username.id = "user_gif";
+
   console.log(username);
   username.style.display= "flex";
  
@@ -353,11 +424,18 @@ var clickeables = (event) =>{
 
 
 
-    var buttons_container = document.createElement("div")
+  var buttons_container = document.createElement("div")
   buttons_container.className = 'tres_botones';
   buttons_container.id = "tres_botones" + parent.id;
   buttons_container.addEventListener("mouseover", boton_hover);
   buttons_container.addEventListener("mouseout", boton_unhover);
+
+  if(parent.classList.contains("trending_shade")){
+    buttons_container.classList.toggle("tres_botones");
+    buttons_container.classList.toggle("tres_botones_trending");
+
+  }
+
 
   var corazon = document.createElement('img');
   corazon.src = "images/icon-fav.svg";
@@ -371,10 +449,16 @@ var clickeables = (event) =>{
   descargar.className = 'mini_button';
   descargar.addEventListener("mouseover", descargar_hover);
   descargar.addEventListener("mouseout", descargar_unhover);
-  var a = document.createElement('a');
-  a.href =  img.src;
-  a.setAttribute('download',"download");  
-   
+  let a = document.createElement('a');
+
+
+  (async () => {
+    let response = await fetch(img.src);
+    let file = await response.blob();
+    a.setAttribute('download',"");  
+    a.href = window.URL.createObjectURL(file);
+  })();
+
   var ampliar = document.createElement('img');
   ampliar.src = "images/icon-max-normal.svg";
   ampliar.className = 'mini_button';
@@ -413,8 +497,12 @@ var clickeables = (event) =>{
 }
 
 var desclickeables = (event) =>{
-  console.log('hola eli')
   var parent = event.target;
+  console.log(parent)
+  if(parent.classList.contains('container_original')){
+    console.log("sheeeeesh")
+  }else{
+ 
   
   var title = parent.getElementsByTagName("h3")[0];
   console.log(title);
@@ -431,6 +519,7 @@ var desclickeables = (event) =>{
   buttons_container.style.display = "none";
   console.log(buttons_container)
   }
+}
 }
 
 //Tres Botones Hover
@@ -535,13 +624,48 @@ var descargar_unhover = (e) => {
 
 // Boton dse ampliar
 
+var scroll_top = () =>{                                                                                                                           
+  var divs = document.getElementById("logo_img");
+  divs.scrollIntoView();
+  console.log("scroll")
+}
+
+
  var ampliar_button = (e) =>{
+  scroll_top();
+
+
   var boton = e.target;
   var div = boton.parentElement;
   var padre = div.parentElement;
-  //var contenedor = document.getElementById('searchResults')
   var gif = padre.firstChild;
-  console.log(div);
+  
+  gif.classList.toggle('trendingImg');
+
+  var tak = padre.children[4];
+  console.log(tak);
+
+  if(tak == null){
+      var fondo = document.createElement("div");
+      fondo.id = "fondo";
+      padre.appendChild(fondo);
+  }else{
+    tak.style.display = "flex"
+  }
+
+
+  var gif_name = padre.getElementsByTagName('h3')[0];
+  var user_name = padre.getElementsByTagName('h4')[0];
+
+  if(!gif_name.classList.contains("name_ampliado")){
+  gif_name.classList.toggle("name_ampliado");
+  user_name.classList.toggle("user_ampliado");
+ }
+  console.log(tak);
+  console.log(padre);
+  console.log(gif);
+  console.log(gif_name);
+  console.log(user_name);
 
   padre.classList.toggle("container_original");
   gif.classList.toggle("img_original");
@@ -549,32 +673,63 @@ var descargar_unhover = (e) => {
   boton.style.display = 'none';
   div.classList.toggle("botones_original");
   console.log(div)
-  //contenedor.style.display = 'none';  
 
-  var cerrar = document.createElement('button');
+  var cerrar = document.createElement('img');
   cerrar.id =  'cerrar_button'
-  var text = document.createTextNode("X");
-  cerrar.appendChild(text);
+  cerrar.src = "images/close.svg";
   padre.appendChild(cerrar)
 
   cerrar.addEventListener('click', cerrar_img)
  }
 
+ var scroll_to_gif = (padre) =>{
+  console.log(padre.id)
+
+ if(padre.classList.contains("trending_shade")){
+  var divs = document.getElementById("gif");
+  divs.scrollIntoView();
+
+}else if(padre.id.startsWith("Fav")){
+  var divs = document.getElementById("favoritos");
+  divs.scrollIntoView();
+
+}else if(padre.id.startsWith("img_div")){
+  var divs = document.getElementById("searchResults");
+  divs.scrollIntoView();
+  
+}
+
+}
  var cerrar_img = (e) =>{
+  
   var boton = e.target;
   var padre = boton.parentElement;
   var gif = padre.firstChild;
+  var fondo = padre.children[4];
   console.log(gif);
   console.log(padre);
+  gif.classList.toggle('trendingImg');
+
+  var gif_name = padre.getElementsByTagName('h3')[0];
+  var user_name = padre.getElementsByTagName('h4')[0];
+  if(gif_name.classList.contains("name_ampliado")){
+    gif_name.classList.toggle("name_ampliado");
+    user_name.classList.toggle("user_ampliado");
+   }
+
+  scroll_to_gif(padre)
 
   padre.classList.toggle("container_original");
   gif.classList.toggle("img_original");
   boton.style.display = 'none';
+  
+  fondo.style.display = "none";  
+
   console.log(gif);
   console.log(padre);
 
-  var boton_agrandar = padre.children[1].children[1];
-  console.log(boton_agrandar);
+  var boton_agrandar = padre.children[3].children[1];
+  console.log(padre.children[4]);
   boton_agrandar.style.display = 'block';
   console.log(boton_agrandar);
 
@@ -617,11 +772,18 @@ var show_guardados = (e) =>{
   var section_search = document.getElementById("searchResults");
   var section_favoritos = document.getElementById("favoritos");
   var section_misgifos = document.getElementById("mis_gifos");
+  var section_crear_gif = document.getElementById("crear_gif");
+  var section_trending = document.getElementById("gif");
+
+
+
   var contenedor_favoritos = document.getElementById("favoritos_container");
   var contenedor_mis_gifos = document.getElementById("mis_gifos_container");
 
   section_title.style.display = 'none';
   section_search.style.display = 'none';
+  section_crear_gif.style.display = 'none';
+  section_trending.style.display = 'flex';
 
 
   var evento = e.target;
@@ -630,20 +792,21 @@ var show_guardados = (e) =>{
 
 
   if(evento.textContent == "FAVORITOS"){
+
+    favoritos_localstorage();
     section_favoritos.style.display = 'flex';
     section_misgifos.style.display = 'none';
       if(contenedor_favoritos.childNodes.length == 0){
       console.log("why");
-      get_guardados();
-      console.log("why");
+      get_guardados(evento);
       }  
   }else{
+    mis_gifos_localstorage();
     section_favoritos.style.display = 'none';
     section_misgifos.style.display = 'flex';
     if(contenedor_mis_gifos.childNodes.length == 0){
-     // get_guardados();
+      get_guardados(evento);
       console.log("why");
-
       }  
   }
 
@@ -659,9 +822,8 @@ var show_guardados = (e) =>{
 
 }
 
-var primerosfavoritos = (i, info) =>{
+var primeros_guardados = (i, info, respuesta ) =>{
 
-  var respuesta = document.getElementById("favoritos_container");
   var img_div = document.createElement('div');
   img_div.id = 'Fav' + i; 
   img_div.className = 'img_shade';
@@ -723,10 +885,17 @@ var clickeables_fav = (e) => {
     descargar.className = 'mini_button';
     descargar.addEventListener("mouseover", descargar_hover);
     descargar.addEventListener("mouseout", descargar_unhover);
-    var a = document.createElement('a');
-    a.href =  img.src;
-    a.setAttribute('download',"download");  
-    
+    let a = document.createElement('a');
+  
+  
+    (async () => {
+      let response = await fetch(img.src);
+      let file = await response.blob();
+      a.setAttribute('download',"");  
+      a.href = window.URL.createObjectURL(file);
+    })();
+
+
     var ampliar = document.createElement('img');
     ampliar.src = "images/icon-max-normal.svg";
     ampliar.className = 'mini_button';
@@ -778,7 +947,10 @@ var desclickeables_fav = (e) => {
 }
 
 var inicio_fav = 0;
-var final_fav = 12
+var final_fav = 12;
+
+var inicio_mis_gifos = 0;
+var final_mis_gifos = 12;
 
 var favs_array = [];
 var mis_gifos_array = [];
@@ -794,8 +966,6 @@ var favoritos_localstorage = () =>{
  } 
 }
 
-favoritos_localstorage();
-
 var mis_gifos_localstorage = () =>{
   for (var i=0; i < localStorage.length; i++){  
     key = localStorage.key(i);
@@ -807,51 +977,87 @@ var mis_gifos_localstorage = () =>{
  } 
 }
 
-mis_gifos_localstorage();
-
-
-var get_guardados = () => {
-
+var favoritos_sin_contenido = () =>{
 
   var respuesta = document.getElementById("favoritos_container");
+  respuesta.classList.toggle("direction")
+  var img= document.createElement('img');
+  img.src = "images/icon-fav-sin-contenido.svg";
+  img.className = "no_favs"
+  var mensaje = document.createElement('div');
+  mensaje.className = "no_favs_msj"
+  var text = document.createTextNode('"¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!"')
+
+  respuesta.appendChild(img);
+  mensaje.appendChild(text);
+  respuesta.appendChild(mensaje);
+}
+
+var mis_gifos_sin_contenido = () =>{
+  var respuesta = document.getElementById("mis_gifos_container");
+  respuesta.classList.toggle("direction")
+  var img= document.createElement('img');
+  img.src = "images/icon-mis-gifos-sin-contenido.svg";
+  img.className = "no_favs"
+  var mensaje = document.createElement('div');
+  mensaje.className = "no_favs_msj"
+  var text = document.createTextNode('¡Anímate a crear tu primer GIFO!')
+
+  respuesta.appendChild(img);
+  mensaje.appendChild(text);
+  respuesta.appendChild(mensaje);
+
+}
+
+
+var get_guardados = (evento) => {
+
+  if(evento.textContent == "FAVORITOS"){
+    var array = favs_array;
+    var no_content = favoritos_sin_contenido;
+    var contenedor = "favoritos_container";
+    var inicio_cuenta = inicio_fav;
+    var final_cuenta = final_fav;
+  }else{
+    var array = mis_gifos_array;
+    var no_content = mis_gifos_sin_contenido;
+    var contenedor = "mis_gifos_container";
+    var inicio_cuenta = inicio_mis_gifos;
+    var final_cuenta = final_mis_gifos;
+
+  }
+  console.log(no_content);
+
+  var respuesta = document.getElementById(contenedor);
   respuesta.className = "row-direction";
 
-  if (localStorage.length == 0){
-    respuesta.classList.toggle("direction")
-    var img= document.createElement('img');
-    img.src = "images/icon-fav-sin-contenido.svg";
-    img.id = "no_favs"
-    var mensaje = document.createElement('div');
-    mensaje.id = "no_favs_msj"
-    var text = document.createTextNode('"¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!"')
+  if (array.length == 0){
 
-    respuesta.appendChild(img);
-    mensaje.appendChild(text);
-    respuesta.appendChild(mensaje);
+    no_content();
 
   }else{
-    if(final_fav < localStorage.length){
-      for (var i = inicio_fav; i < final_fav; i++) {
-        var key = localStorage.key(i);
+    if(final_cuenta < array.length){
+      for (var i = inicio_cuenta; i < final_cuenta; i++) {
+        var key = array[i];
         var info = JSON.parse(localStorage.getItem(key));
-
-        primerosfavoritos(i, info);
+        primeros_guardados(i, info, respuesta);
         }  
-      inicio_fav += 12;
-      final_fav += 12;
+      inicio_cuenta += 12;
+      final_cuenta += 12;
 
     }else{
-      for (var i = inicio_fav; i < localStorage.length; i++) {
-        var key = localStorage.key(i);
+      for (var i = inicio_cuenta; i < array.length; i++) {
+        var key = array[i];
         var info = JSON.parse(localStorage.getItem(key));
-        console.log(info);
-        console.log('"'+ localStorage.getItem(key) + '"');
-        console.log(info);
 
-        primerosfavoritos(i, info);
+        console.log(info);
+        console.log(array.length);
+
+
+        primeros_guardados(i, info, respuesta);
         }  
-      inicio_fav += 12;
-      final_fav += 12;
+      inicio_cuenta += 12;
+      final_cuenta += 12;
       ver_mas_bfav.style.display = "none";
     }   
   }
@@ -877,19 +1083,34 @@ ver_mas_bfav.addEventListener("click", ver_mas_fav);
 
 //CREAR GIFO
 
+var boton_mas = document.getElementById("boton_mas");
+
+  boton_mas.addEventListener('mouseover', function(){
+    boton_mas.src = "images/CTA-crear-gifo-hover.svg"
+  })
+  boton_mas.addEventListener('mouseout', function(){
+    boton_mas.src = "images/button-crear-gifo.svg"
+  })
+
+
 var crear_gif = () =>{
+  boton_mas.src = "images/CTA-crear-gifo-active.svg"
+
+
   var section_title = document.getElementById("top");
   var section_search = document.getElementById("searchResults");
   var section_favoritos = document.getElementById("favoritos");
   var section_trending = document.getElementById("gif");
   var section_crear_gif = document.getElementById("crear_gif");
+  var section_misgifos = document.getElementById("mis_gifos");
+
 
   section_title.style.display = 'none';
   section_search.style.display = 'none';
   section_favoritos.style.display = 'none';
   section_trending.style.display = 'none';
   section_crear_gif.style.display = 'flex';
-
+  section_misgifos.style.display = 'none';
 }
 
 var acceso_camara = () =>{
@@ -1063,7 +1284,13 @@ var get_info = (id) =>{
     .then(json => {
       console.log(json);
 
-      localStorage.setItem(json.data.id, json.data.url);      
+      var img = json.data.images.downsized.url;
+      console.log(img);
+      var title = "Unknown";
+      var user = "Unknown";
+      var mis_gifos_info = [img, title, user];
+      var string_way = JSON.stringify(mis_gifos_info)
+      localStorage.setItem(json.data.id, string_way);      
 
 
     }).catch(e => {
@@ -1206,8 +1433,147 @@ var checkTime = (i) => {
 };
 
 
+//footer
 
-//Mis GIFOS
+var fb = document.getElementById("fb");
+fb.addEventListener('mouseover', function(){
+  fb.src = "images/icon_facebook_hover.svg"
+})
+fb.addEventListener('mouseout', function(){
+  fb.src = "images/icon_facebook.svg"
+})
+
+var tw = document.getElementById("tw");
+tw.addEventListener('mouseover', function(){
+  tw.src = "images/icon-twitter-hover.svg"
+})
+tw.addEventListener('mouseout', function(){
+  tw.src = "images/icon-tw-normal.svg"
+})
+
+var ig = document.getElementById("ig");
+ig.addEventListener('mouseover', function(){
+  ig.src = "images/icon_instagram-hover.svg"
+})
+ig.addEventListener('mouseout', function(){
+  ig.src = "images/icon_instagram.svg"
+})
+
+
+
+//modo_nocturno
+
+var header_nocturno = () =>{
+var a =document.getElementsByTagName("a")
+
+
+  for (i = 0; i < a.length; i++) {
+    a[i].style.color = '#FFFFFF';
+    a[i].style.backgroundColor = '#37383C';
+   
+  document.getElementById("modo_nocturno").style.backgroundColor = '#37383C';
+  document.getElementById("boton_mis_gifos").style.backgroundColor = '#37383C';
+  document.getElementById("favorito").style.backgroundColor = '#37383C';
+      
+    console.log(a[0]);
+  }
+}
+var footer_nocturno = () =>{
+  document.getElementsByTagName("footer")[0].style.backgroundColor = '#37383C';
+  document.getElementById("footer_left").style.color = '#FFFFFF';
+  document.getElementById("footer_right").style.color = '#FFFFFF';
+
+  var fb = document.getElementById("fb");
+  fb.addEventListener('mouseover', function(){
+    fb.src = "images/icon_facebook_noc.svg"
+  })
+  fb.addEventListener('mouseout', function(){
+    fb.src = "images/icon_facebook.svg"
+  })
+
+  var tw = document.getElementById("tw");
+  tw.addEventListener('mouseover', function(){
+    tw.src = "images/icon_twitter_noc.svg"
+  })
+  tw.addEventListener('mouseout', function(){
+    tw.src = "images/icon-tw-normal.svg"
+  })
+
+  var ig = document.getElementById("ig");
+  ig.addEventListener('mouseover', function(){
+    ig.src = "images/icon_instagram_noc.svg"
+  })
+  ig.addEventListener('mouseout', function(){
+    ig.src = "images/icon_instagram.svg"
+  })
+
+  
+}
+
+
+var cambio_noche = () =>{
+  document.body.style.background = "#37383C";
+
+  var logo = document.getElementById("logo_img");
+  console.log(logo);
+  logo.src = "images/Logo-modo-noc.svg";
+
+  
+  header_nocturno();
+
+  var boton_mas = document.getElementById("boton_mas");
+  boton_mas.src = "images/CTA-crear-gifo-modo-noc.svg";
+
+  boton_mas.addEventListener('mouseover', function(){
+    boton_mas.src = "images/CTA-crear-gifo-hover-modo-noc.svg"
+  })
+  boton_mas.addEventListener('mouseout', function(){
+    boton_mas.src = "images/CTA-crear-gifo-modo-noc.svg"
+  })
+
+
+
+  document.getElementById("cambiante").style.color = '#FFFFFF';
+  document.getElementById("search").style.backgroundColor = '#37383C';
+  document.getElementById("suggestionContainer").style.border = '1px solid #FFFFFF';
+  document.getElementById("lupa").src = "images/icon-search-mod-noc.svg";
+  document.getElementById("trending_h").style.color = '#FFFFFF';
+  document.getElementById("trending_p").style.color = '#FFFFFF';
+  document.getElementById("gif").style.backgroundColor = '#222326';
+  document.getElementById("trending").style.color = '#FFFFFF';
+  document.getElementById("gifosP").style.color = '#FFFFFF';
+
+  footer_nocturno();
+
+  document.getElementById("camara_noche").src = 'images/camara-modo-noc.svg';
+  document.getElementById("pelicula_img").src = 'images/pelicula-modo-noc.svg';
+
+ 
+  document.getElementById("search").style.color = '#FFFFFF';
+  document.getElementsByClassName("div_icon")[0].src = 'images/icon-search-modo-noct.svg';
+  document.getElementsByClassName("div_icon")[1].src = 'images/icon-search-modo-noct.svg';
+  document.getElementsByClassName("div_icon")[2].src = 'images/icon-search-modo-noct.svg';
+  document.getElementsByClassName("div_icon")[3].src = 'images/icon-search-modo-noct.svg';
+  document.getElementById("close_sugerencia").src = "images/close-modo-noct.svg";
+  
+  document.getElementById('ver_mas').style.backgroundColor = "#37383C",
+  document.getElementById("ver_mas_hover").src = 'images/CTA-ver+-modo-noc.svg';
+  var ver_mas_hover = document.getElementById('ver_mas_hover');
+
+  ver_mas_hover.addEventListener('mouseover', function(){
+    ver_mas_hover.src = "images/CTA-ver+hover-modo-noc.svg"
+  })
+  ver_mas_hover.addEventListener('mouseout', function(){
+    ver_mas_hover.src = "images/CTA-ver+-modo-noc.svg"
+  })
+}
+
+var modo_nocturno = document.getElementById("modo_nocturno");
+modo_nocturno.addEventListener('click', cambio_noche);
+
+
+
+
 
 
 
