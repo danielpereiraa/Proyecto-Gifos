@@ -449,13 +449,15 @@ var clickeables = (event) =>{
   descargar.className = 'mini_button';
   descargar.addEventListener("mouseover", descargar_hover);
   descargar.addEventListener("mouseout", descargar_unhover);
-  let a = document.createElement('a');
+  var a = document.createElement('a');
 
 
   (async () => {
     let response = await fetch(img.src);
     let file = await response.blob();
     a.setAttribute('download',"");  
+    a.className = "mini_boton"
+
     a.href = window.URL.createObjectURL(file);
   })();
 
@@ -482,7 +484,6 @@ var clickeables = (event) =>{
   }else{
     var buttons_container = document.getElementById('tres_botones' + parent.id);
     if(buttons_container == null){
-      console.log("daniel hc")
       console.log(img.id)
       return
       }
@@ -630,115 +631,113 @@ var scroll_top = () =>{
   console.log("scroll")
 }
 
-
  var ampliar_button = (e) =>{
+
+  document.getElementById("gif").style.display = "none";
+  document.getElementsByTagName("footer")[0].style.display = "none";
+  document.getElementById("searchResults").style.display = "none";
+  document.getElementById("favoritos").style.display = "none";
+  document.getElementById("mis_gifos").style.display = "none";
+
+
   scroll_top();
-
-
   var boton = e.target;
   var div = boton.parentElement;
   var padre = div.parentElement;
   var gif = padre.firstChild;
-  
-  gif.classList.toggle('trendingImg');
-
-  var tak = padre.children[4];
-  console.log(tak);
-
-  if(tak == null){
-      var fondo = document.createElement("div");
-      fondo.id = "fondo";
-      padre.appendChild(fondo);
-  }else{
-    tak.style.display = "flex"
-  }
-
-
-  var gif_name = padre.getElementsByTagName('h3')[0];
-  var user_name = padre.getElementsByTagName('h4')[0];
-
-  if(!gif_name.classList.contains("name_ampliado")){
-  gif_name.classList.toggle("name_ampliado");
-  user_name.classList.toggle("user_ampliado");
- }
-  console.log(tak);
   console.log(padre);
-  console.log(gif);
-  console.log(gif_name);
-  console.log(user_name);
+  var fondo = document.getElementById("fondo")
+  fondo.style.display= "block";
 
-  padre.classList.toggle("container_original");
-  gif.classList.toggle("img_original");
+  var imagen = document.createElement('img');
+  imagen.classList.toggle("img_original");
+  imagen.src = gif.src
+  console.log(imagen.src)
 
-  boton.style.display = 'none';
-  div.classList.toggle("botones_original");
-  console.log(div)
+  fondo.appendChild(imagen);
+  
+  var gif_name = padre.getElementsByTagName('h3')[0].textContent;
+  var user_name = padre.getElementsByTagName('h4')[0].textContent;
 
+  var name = document.createElement("h3");
+  name.className= "name_ampliado";
+  name.innerHTML = gif_name;
+  fondo.appendChild(name);
+
+  var user = document.createElement("h4");
+  user.className= "user_ampliado";
+  user.innerHTML = user_name;
+  fondo.appendChild(user);
+
+//
+ // boton.style.display = 'none';
+  //div.classList.toggle("botones_original");
+  //console.log(div)
+//
   var cerrar = document.createElement('img');
   cerrar.id =  'cerrar_button'
   cerrar.src = "images/close.svg";
-  padre.appendChild(cerrar)
-
+  fondo.appendChild(cerrar)
+  
   cerrar.addEventListener('click', cerrar_img)
+
+  var buttons_container = document.createElement("div")
+  buttons_container.className = "tres_botones";
+  buttons_container.id = "tres_botones_ampliado";
+  buttons_container.addEventListener("mouseover", boton_hover);
+  buttons_container.addEventListener("mouseout", boton_unhover);
+
+  var corazon = document.createElement('img');
+  corazon.src = "images/icon-fav.svg";
+  corazon.className = 'mini_button_ampliado';
+  corazon.addEventListener("click", corazon_button);
+  corazon.addEventListener("mouseover", corazon_hover);
+  corazon.addEventListener("mouseout", corazon_unhover);
+
+  var text = document.createTextNode("x");
+
+  corazon.appendChild(text);
+
+  var descargar = document.createElement('img');
+  descargar.src = "images/icon-download.svg";
+  descargar.className = 'mini_button';
+  descargar.addEventListener("mouseover", descargar_hover);
+  descargar.addEventListener("mouseout", descargar_unhover);
+  let a = document.createElement('a');
+
+  (async () => {
+    let response = await fetch(imagen.src);
+    let file = await response.blob();
+    a.setAttribute('download',"");  
+    a.href = window.URL.createObjectURL(file);
+  })();
+
+  
+  buttons_container.appendChild(corazon);
+  a.appendChild(descargar);
+  buttons_container.appendChild(a);
+    
+  fondo.appendChild(buttons_container);
+
+
  }
 
- var scroll_to_gif = (padre) =>{
-  console.log(padre.id)
-
- if(padre.classList.contains("trending_shade")){
-  var divs = document.getElementById("gif");
-  divs.scrollIntoView();
-
-}else if(padre.id.startsWith("Fav")){
-  var divs = document.getElementById("favoritos");
-  divs.scrollIntoView();
-
-}else if(padre.id.startsWith("img_div")){
-  var divs = document.getElementById("searchResults");
-  divs.scrollIntoView();
-  
-}
-
-}
  var cerrar_img = (e) =>{
   
+  window.location.reload();
+
+
   var boton = e.target;
   var padre = boton.parentElement;
   var gif = padre.firstChild;
-  var fondo = padre.children[4];
   console.log(gif);
   console.log(padre);
-  gif.classList.toggle('trendingImg');
+  padre.innerHTML = "";
+  padre.style.display = "none";
 
-  var gif_name = padre.getElementsByTagName('h3')[0];
-  var user_name = padre.getElementsByTagName('h4')[0];
-  if(gif_name.classList.contains("name_ampliado")){
-    gif_name.classList.toggle("name_ampliado");
-    user_name.classList.toggle("user_ampliado");
-   }
 
-  scroll_to_gif(padre)
-
-  padre.classList.toggle("container_original");
-  gif.classList.toggle("img_original");
-  boton.style.display = 'none';
-  
-  fondo.style.display = "none";  
-
-  console.log(gif);
-  console.log(padre);
-
-  var boton_agrandar = padre.children[3].children[1];
-  console.log(padre.children[4]);
-  boton_agrandar.style.display = 'block';
-  console.log(boton_agrandar);
-
-  var botons_div = boton_agrandar.parentElement;
-  botons_div.classList.toggle("botones_original");
-  console.log(botons_div);
  }
 
- 
  var ampliar_hover = (e) =>{
   var boton = e.target;
   boton.src = "images/icon-max-hover.svg";
@@ -749,6 +748,7 @@ var scroll_top = () =>{
   console.log(boton)
 
  }
+
  var ampliar_unhover = (e) =>{
   var boton = e.target;
   boton.src = "images/icon-max-normal.svg";
@@ -787,38 +787,50 @@ var show_guardados = (e) =>{
 
 
   var evento = e.target;
-  console.log(contenedor_favoritos.childNodes.length == 0);
+  console.log(contenedor_favoritos.childNodes.length);
 
 
 
   if(evento.textContent == "FAVORITOS"){
-
-    favoritos_localstorage();
+    if(favs_array.length == 0){
+      favoritos_localstorage();
+    }
     section_favoritos.style.display = 'flex';
     section_misgifos.style.display = 'none';
-      if(contenedor_favoritos.childNodes.length == 0){
-      console.log("why");
-      get_guardados(evento);
-      }  
+    if(contenedor_favoritos.childNodes.length == 0){
+    console.log("why");
+    get_favoritos(evento);
+
+    if(favs_array.length > 12){    
+      var ver_mas_fav = document.getElementById('ver_mas_fav');
+      console.log(ver_mas_fav)
+      ver_mas_fav.style.display = "flex";
+      }
+    }  
+
+   
+
   }else{
-    mis_gifos_localstorage();
+    if(mis_gifos_array.length == 0){
+      mis_gifos_localstorage();
+    }
     section_favoritos.style.display = 'none';
     section_misgifos.style.display = 'flex';
     if(contenedor_mis_gifos.childNodes.length == 0){
-      get_guardados(evento);
-      console.log("why");
+      get_mis_gifos(evento);
+      if(mis_gifos_array.length > 12){    
+        var ver_mas_gifos = document.getElementById('ver_mas_mis_gifos');
+        console.log(mis_gifos_array.length)
+        ver_mas_gifos.style.display = "flex";
+        }
       }  
   }
 
+  console.log(favs_array.length)
 
 
+  console.log(mis_gifos_array.length)
 
-  if(localStorage.length > 12){    
-
-  var ver_mas = document.getElementById('ver_mas_fav');
-  console.log(ver_mas)
-  ver_mas.style.display = "flex";
-  }
 
 }
 
@@ -1010,76 +1022,124 @@ var mis_gifos_sin_contenido = () =>{
 }
 
 
-var get_guardados = (evento) => {
+var get_favoritos = (evento) => {
 
-  if(evento.textContent == "FAVORITOS"){
-    var array = favs_array;
-    var no_content = favoritos_sin_contenido;
-    var contenedor = "favoritos_container";
-    var inicio_cuenta = inicio_fav;
-    var final_cuenta = final_fav;
-  }else{
-    var array = mis_gifos_array;
-    var no_content = mis_gifos_sin_contenido;
-    var contenedor = "mis_gifos_container";
-    var inicio_cuenta = inicio_mis_gifos;
-    var final_cuenta = final_mis_gifos;
+  console.log(evento);
+  console.log(evento.textContent);
 
-  }
-  console.log(no_content);
-
-  var respuesta = document.getElementById(contenedor);
+  var respuesta = document.getElementById("favoritos_container");
   respuesta.className = "row-direction";
 
-  if (array.length == 0){
+  if (favs_array.length == 0){
 
-    no_content();
+    favoritos_sin_contenido();
 
   }else{
-    if(final_cuenta < array.length){
-      for (var i = inicio_cuenta; i < final_cuenta; i++) {
-        var key = array[i];
+    if(final_fav < favs_array.length){
+      for (var i = inicio_fav; i < final_fav; i++) {
+        var key = favs_array[i];
         var info = JSON.parse(localStorage.getItem(key));
         primeros_guardados(i, info, respuesta);
         }  
-      inicio_cuenta += 12;
-      final_cuenta += 12;
+        console.log(inicio_fav);
+        console.log(final_fav);
+        inicio_fav += 12;
+        final_fav += 12;
+
+        console.log(inicio_fav);
+        console.log(final_fav);
 
     }else{
-      for (var i = inicio_cuenta; i < array.length; i++) {
-        var key = array[i];
+      for (var i = inicio_fav; i < favs_array.length; i++) {
+
+        var key = favs_array[i];
         var info = JSON.parse(localStorage.getItem(key));
 
         console.log(info);
-        console.log(array.length);
-
+        console.log(favs_array.length);
 
         primeros_guardados(i, info, respuesta);
         }  
-      inicio_cuenta += 12;
-      final_cuenta += 12;
-      ver_mas_bfav.style.display = "none";
+        console.log(inicio_fav);
+      console.log(final_fav);
+      inicio_fav += 12;
+      final_fav += 12;
+      console.log(inicio_fav);
+      console.log(final_fav);
+     
+      document.getElementById('ver_mas_fav').style.display = "none";
     }   
   }
 }
-
 var boton_fav = document.getElementById("favorito");
 boton_fav.addEventListener('click', show_guardados);
 
-var boton_mis_gifos = document.getElementById("boton_mis_gifos");
-boton_mis_gifos.addEventListener('click', show_guardados);
-
-
-
   //Ver mas
 var ver_mas_fav = () =>{
-  get_guardados();
+  var padre = document.getElementById("favorito");
+  console.log(padre)
+  get_favoritos(padre);
 }
-
 var ver_mas_bfav = document.getElementById('ver_mas_fav');
 ver_mas_bfav.addEventListener("click", ver_mas_fav);
 
 
+//Get mis gifos
+var get_mis_gifos = (evento) => {
+  console.log(evento);
+  console.log(evento.textContent);
+ 
+
+  var respuesta = document.getElementById("mis_gifos_container");
+  respuesta.className = "row-direction";
+
+  if (mis_gifos_array.length == 0){
+
+    mis_gifos_sin_contenido();
+
+  }else{
+    if(final_mis_gifos < mis_gifos_array.length){
+      for (var i = inicio_mis_gifos; i < final_mis_gifos; i++) {
+        var key = mis_gifos_array[i];
+        var info = JSON.parse(localStorage.getItem(key));
+        primeros_guardados(i, info, respuesta);
+        }  
+
+        inicio_mis_gifos += 12;
+        final_mis_gifos += 12;
+
+      console.log(inicio_mis_gifos);
+      console.log(final_mis_gifos);
+    }else{
+      for (var i = inicio_mis_gifos; i < mis_gifos_array.length; i++) {
+        var key = mis_gifos_array[i];
+        var info = JSON.parse(localStorage.getItem(key));
+
+        console.log(info);
+
+
+        primeros_guardados(i, info, respuesta);
+        }  
+
+      inicio_mis_gifos += 12;
+      final_mis_gifos += 12;
+
+      document.getElementById("ver_mas_mis_gifos").style.display = "none";
+    }   
+  }
+}
+
+var boton_mis_gifos = document.getElementById("boton_mis_gifos");
+boton_mis_gifos.addEventListener('click', show_guardados);
+
+  //Ver mas mis gifos
+
+var ver_mas_mis_gifos = () =>{
+  var padre = document.getElementById("boton_mis_gifos");
+  get_mis_gifos(padre);
+}
+var ver_mas_gifo = document.getElementById('ver_mas_mis_gifos');
+ver_mas_gifo.addEventListener("click", ver_mas_mis_gifos);
 
 //CREAR GIFO
 
@@ -1466,16 +1526,14 @@ ig.addEventListener('mouseout', function(){
 var header_nocturno = () =>{
 var a =document.getElementsByTagName("a")
 
-
   for (i = 0; i < a.length; i++) {
-    a[i].style.color = '#FFFFFF';
-    a[i].style.backgroundColor = '#37383C';
+    a[i].classList.toggle("noche");
+    a[0].textContent = "MODO DIURNO"
+
    
   document.getElementById("modo_nocturno").style.backgroundColor = '#37383C';
   document.getElementById("boton_mis_gifos").style.backgroundColor = '#37383C';
   document.getElementById("favorito").style.backgroundColor = '#37383C';
-      
-    console.log(a[0]);
   }
 }
 var footer_nocturno = () =>{
@@ -1509,9 +1567,14 @@ var footer_nocturno = () =>{
 
   
 }
-
-
+var mobile_nocturno = () =>{
+  document.getElementById("logo_img_mobile").src = "images/logo-mobile-modo-noct.svg";
+  document.getElementById("burguer").src = "images/burger-modo-noct.svg";
+  document.getElementById("close_burguer").src = "images/close-modo-noct.svg";
+  document.getElementsByTagName("header")[0].classList.toggle("border_nocturno");
+}
 var cambio_noche = () =>{
+  modo_dia();
   document.body.style.background = "#37383C";
 
   var logo = document.getElementById("logo_img");
@@ -1544,6 +1607,7 @@ var cambio_noche = () =>{
   document.getElementById("gifosP").style.color = '#FFFFFF';
 
   footer_nocturno();
+  mobile_nocturno();
 
   document.getElementById("camara_noche").src = 'images/camara-modo-noc.svg';
   document.getElementById("pelicula_img").src = 'images/pelicula-modo-noc.svg';
@@ -1567,13 +1631,41 @@ var cambio_noche = () =>{
     ver_mas_hover.src = "images/CTA-ver+-modo-noc.svg"
   })
 }
-
 var modo_nocturno = document.getElementById("modo_nocturno");
 modo_nocturno.addEventListener('click', cambio_noche);
 
+//modo dia
+
+var modo_dia = () =>{
+  var a =document.getElementsByTagName("a")
+
+  if(a[0].textContent == "MODO DIURNO"){
+    window.location.reload()
+
+  }
+}
+modo_dia();
 
 
 
+//menu hamburguesa
 
+var menu_burguer = document.getElementById("burguer");
+var menu_list = document.getElementById("list");
 
+var display_menu = () =>{
+  menu_list.className = "show_menu";
+  menu_burguer.classList.toggle("no_burguer");
+  menu_burguer.classList.toggle("burguer");
+
+  document.getElementById("close_burguer").style.display= "block";
+    console.log(menu_burguer)
+}
+var hide_menu =()=>{
+  document.getElementById("close_burguer").style.display= "none";
+  menu_burguer.classList.toggle("no_burguer");
+  menu_burguer.classList.toggle("burguer");
+  menu_list.classList.toggle("hide_menu");
+}
+menu_list.addEventListener('click', hide_menu);
 
