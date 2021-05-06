@@ -1644,7 +1644,6 @@ var modo_dia = () =>{
 
   }
 }
-modo_dia();
 
 
 
