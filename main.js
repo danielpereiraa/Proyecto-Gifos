@@ -992,6 +992,7 @@ var mis_gifos_localstorage = () =>{
 var favoritos_sin_contenido = () =>{
 
   var respuesta = document.getElementById("favoritos_container");
+  respuesta.classList.toggle("row-direction");
   respuesta.classList.toggle("direction")
   var img= document.createElement('img');
   img.src = "images/icon-fav-sin-contenido.svg";
@@ -1007,6 +1008,7 @@ var favoritos_sin_contenido = () =>{
 
 var mis_gifos_sin_contenido = () =>{
   var respuesta = document.getElementById("mis_gifos_container");
+  respuesta.classList.toggle("row-direction")
   respuesta.classList.toggle("direction")
   var img= document.createElement('img');
   img.src = "images/icon-mis-gifos-sin-contenido.svg";

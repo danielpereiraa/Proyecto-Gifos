@@ -571,14 +571,14 @@ h4{
 }
 #favoritos_container{
     display: flex;
-    flex-flow: row wrap;
     align-content: center;
     justify-content: space-between;
     padding-left: 21px;
     padding-right: 21px;
 }
 .row-direction{
-    justify-content: space-between;}
+    flex-flow: column;
+}
 .direction{
     display: flex;
     flex-direction: column;
@@ -785,7 +785,6 @@ h4{
 
 #mis_gifos_container{
     display: flex;
-    flex-flow: row wrap;
     justify-content: space-between;
     align-content: center;
     padding-left: 21px;
@@ -1003,7 +1002,6 @@ footer{
 
     #favoritos_container{
         display: flex;
-        flex-flow: row wrap;
         align-content: center;
         justify-content: space-between;
         padding-left: 100px;
@@ -1011,7 +1009,6 @@ footer{
     }
     #mis_gifos_container{
         display: flex;
-        flex-flow: row wrap;
         justify-content: space-between;
         align-content: center;
         padding-left: 100px;
