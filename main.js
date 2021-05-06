@@ -1600,6 +1600,7 @@ var cambio_noche = () =>{
   document.getElementById("search").style.backgroundColor = '#37383C';
   document.getElementById("suggestionContainer").style.border = '1px solid #FFFFFF';
   document.getElementById("lupa").src = "images/icon-search-mod-noc.svg";
+  
   document.getElementById("trending_h").style.color = '#FFFFFF';
   document.getElementById("trending_p").style.color = '#FFFFFF';
   document.getElementById("gif").style.backgroundColor = '#222326';
@@ -1644,7 +1645,7 @@ var modo_dia = () =>{
 
   }
 }
-modo_dia();
+
 
 
 
